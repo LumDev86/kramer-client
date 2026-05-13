@@ -16,7 +16,7 @@ export default function CheckoutPage() {
   const [step, setStep] = useState<Step>('form');
   const [orderNumber, setOrderNumber] = useState('');
   const [whatsappUrl, setWhatsappUrl] = useState('');
-  const [copied, setCopied] = useState(false);
+  const [copiedField, setCopiedField] = useState<'cbu' | 'alias' | null>(null);
   const [form, setForm] = useState({
     nombre: '',
     domicilio: '',
@@ -30,10 +30,10 @@ export default function CheckoutPage() {
   const titular = process.env.NEXT_PUBLIC_TITULAR!;
   const waNumber = process.env.NEXT_PUBLIC_WHATSAPP_NUMBER!;
 
-  const handleCopy = (text: string) => {
+  const handleCopy = (text: string, field: 'cbu' | 'alias') => {
     navigator.clipboard.writeText(text);
-    setCopied(true);
-    setTimeout(() => setCopied(false), 2000);
+    setCopiedField(field);
+    setTimeout(() => setCopiedField(null), 2000);
   };
 
   const handleSubmit = (e: React.FormEvent) => {
@@ -238,11 +238,11 @@ export default function CheckoutPage() {
             <p className="font-bold text-gray-700">Datos bancarios</p>
             <div className="flex justify-between items-center">
               <div>
-                <p className="text-xs text-gray-400">CBU</p>
-                <p className="font-mono text-gray-700">{cbu}</p>
+                <p className="text-xs text-gray-400">CVU/CBU</p>
+                <p className="font-mono text-gray-700 text-xs">{cbu}</p>
               </div>
-              <button type="button" onClick={() => handleCopy(cbu)} className="text-orange-500 active:text-orange-700">
-                {copied ? <Check size={16} weight="bold" /> : <Copy size={16} weight="bold" />}
+              <button type="button" onClick={() => handleCopy(cbu, 'cbu')} className="text-orange-500 active:text-orange-700 flex-shrink-0 ml-2">
+                {copiedField === 'cbu' ? <Check size={16} weight="bold" className="text-green-500" /> : <Copy size={16} weight="bold" />}
               </button>
             </div>
             <div className="flex justify-between items-center">
@@ -250,8 +250,8 @@ export default function CheckoutPage() {
                 <p className="text-xs text-gray-400">Alias</p>
                 <p className="font-mono text-gray-700">{alias}</p>
               </div>
-              <button type="button" onClick={() => handleCopy(alias)} className="text-orange-500 active:text-orange-700">
-                {copied ? <Check size={16} weight="bold" /> : <Copy size={16} weight="bold" />}
+              <button type="button" onClick={() => handleCopy(alias, 'alias')} className="text-orange-500 active:text-orange-700 flex-shrink-0 ml-2">
+                {copiedField === 'alias' ? <Check size={16} weight="bold" className="text-green-500" /> : <Copy size={16} weight="bold" />}
               </button>
             </div>
             <div>
