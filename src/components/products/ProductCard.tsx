@@ -38,6 +38,11 @@ export default function ProductCard({ product, index = 0 }: Props) {
       <div className="p-3">
         <p className="text-xs text-gray-400 truncate font-medium">{product.category?.name ?? 'Sin categoría'}</p>
         <p className="text-sm font-bold text-gray-800 line-clamp-2 leading-tight mt-0.5">{product.title}</p>
+        {product.quantity != null && product.unit && (
+          <span className="inline-block text-[10px] font-bold text-orange-500 bg-orange-50 rounded-full px-2 py-0.5 mt-1">
+            {product.quantity} {product.unit}
+          </span>
+        )}
         <div className="flex items-center justify-between mt-2">
           <span className="text-orange-500 font-extrabold text-sm">
             ${parseFloat(product.price).toLocaleString('es-AR')}

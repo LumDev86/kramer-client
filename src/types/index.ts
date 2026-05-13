@@ -17,6 +17,8 @@ export interface Product {
   price: string;
   stock: number;
   imageUrl: string;
+  quantity: number | null;
+  unit: string | null;
   categoryId: string | null;
   category: Category | null;
   createdAt: string;

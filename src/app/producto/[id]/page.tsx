@@ -40,11 +40,18 @@ export default function ProductoPage() {
         />
       </div>
 
-      {product.category && (
-        <span className="text-xs text-orange-500 font-bold uppercase tracking-wide">
-          {product.category.name}
-        </span>
-      )}
+      <div className="flex items-center gap-2 flex-wrap">
+        {product.category && (
+          <span className="text-xs text-orange-500 font-bold uppercase tracking-wide">
+            {product.category.name}
+          </span>
+        )}
+        {product.quantity != null && product.unit && (
+          <span className="text-xs font-bold text-white bg-orange-500 rounded-full px-2.5 py-0.5">
+            {product.quantity} {product.unit}
+          </span>
+        )}
+      </div>
 
       <h1 className="text-xl font-extrabold text-gray-800 leading-snug">{product.title}</h1>
 
