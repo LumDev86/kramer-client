@@ -1,7 +1,7 @@
 'use client';
 
 import Image from 'next/image';
-import { Bicycle, Clock } from '@phosphor-icons/react';
+import { Motorcycle, Timer } from '@phosphor-icons/react';
 import { useStoreStatus } from '@/hooks/useStoreStatus';
 import { StoreScheduleDay } from '@/types';
 
@@ -43,7 +43,7 @@ export default function Header() {
     : (process.env.NEXT_PUBLIC_STORE_HOURS ?? 'Lun-Dom 8:00-22:00');
 
   return (
-    <header className="fixed top-0 left-0 right-0 z-50 bg-gradient-to-r from-orange-500 to-orange-600 px-4 pt-3 pb-3 shadow-lg">
+    <header className="fixed top-0 left-0 right-0 z-50 bg-gradient-to-r from-orange-500 to-orange-600 px-4 py-3 shadow-lg">
       <div className="max-w-md mx-auto flex items-center justify-between gap-3">
 
         <div className="flex items-center gap-3 min-w-0">
@@ -62,13 +62,13 @@ export default function Header() {
             <p className="text-white font-extrabold text-base leading-tight truncate tracking-tight drop-shadow-sm">
               {storeName}
             </p>
-            <div className="flex items-center gap-1.5 mt-1 flex-wrap">
-              <span className="flex items-center gap-1 bg-white/20 text-white text-[10px] font-bold px-2 py-0.5 rounded-full backdrop-blur-sm">
-                <Bicycle size={10} weight="fill" />
-                Envíos
+            <div className="flex flex-col gap-0.5 mt-1">
+              <span className="flex items-center gap-1.5 w-fit bg-white/20 text-white text-[10px] font-bold px-2 py-0.5 rounded-full">
+                <Motorcycle size={11} weight="fill" />
+                Hacemos envíos a domicilio
               </span>
-              <span className="flex items-center gap-1 bg-white/20 text-white text-[10px] font-bold px-2 py-0.5 rounded-full backdrop-blur-sm truncate max-w-[160px]">
-                <Clock size={10} weight="fill" className="flex-shrink-0" />
+              <span className="flex items-center gap-1.5 w-fit bg-white/20 text-white text-[10px] font-bold px-2 py-0.5 rounded-full max-w-[200px]">
+                <Timer size={11} weight="fill" className="flex-shrink-0" />
                 <span className="truncate">{hours}</span>
               </span>
             </div>
@@ -79,17 +79,17 @@ export default function Header() {
           {isLoading ? (
             <div className="w-16 h-6 bg-white/20 rounded-full animate-pulse" />
           ) : status === 'busy' && isOpen ? (
-            <span className="flex items-center gap-1.5 bg-yellow-400 text-yellow-900 text-[11px] font-extrabold px-3 py-1.5 rounded-full shadow-md">
+            <span className="flex items-center gap-1.5 bg-yellow-400 text-yellow-900 text-[11px] font-extrabold px-3 py-1.5 rounded-full shadow-md whitespace-nowrap">
               <span className="w-1.5 h-1.5 bg-yellow-800/60 rounded-full animate-pulse flex-shrink-0" />
               Ocupado · {busyTime}m
             </span>
           ) : isOpen ? (
-            <span className="flex items-center gap-1.5 bg-green-400 text-white text-[11px] font-extrabold px-3 py-1.5 rounded-full shadow-md">
+            <span className="flex items-center gap-1.5 bg-green-400 text-white text-[11px] font-extrabold px-3 py-1.5 rounded-full shadow-md whitespace-nowrap">
               <span className="w-1.5 h-1.5 bg-white/70 rounded-full animate-pulse flex-shrink-0" />
               Abierto
             </span>
           ) : (
-            <span className="flex items-center gap-1.5 bg-black/30 text-white/90 text-[11px] font-bold px-3 py-1.5 rounded-full">
+            <span className="flex items-center gap-1.5 bg-black/30 text-white/90 text-[11px] font-bold px-3 py-1.5 rounded-full whitespace-nowrap">
               <span className="w-1.5 h-1.5 bg-white/40 rounded-full flex-shrink-0" />
               Cerrado
             </span>
