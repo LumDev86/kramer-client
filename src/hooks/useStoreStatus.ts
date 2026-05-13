@@ -26,6 +26,7 @@ export function useStoreStatus() {
   return {
     status:   data?.status   ?? null,
     busyTime: data?.busyTime ?? null,
+    schedule: data?.schedule ?? [],
     isOpen,
     isLoading,
   };

@@ -3,11 +3,44 @@
 import Image from 'next/image';
 import { Bicycle, Clock } from '@phosphor-icons/react';
 import { useStoreStatus } from '@/hooks/useStoreStatus';
+import { StoreScheduleDay } from '@/types';
+
+const DAY_NAMES = ['Dom', 'Lun', 'Mar', 'Mié', 'Jue', 'Vie', 'Sáb'];
+
+function formatSchedule(schedule: StoreScheduleDay[]): string {
+  const open = schedule.filter((d) => d.isOpen);
+  if (open.length === 0) return 'Sin horario';
+
+  const groups: { days: number[]; openHour: number; closeHour: number }[] = [];
+  for (const day of open) {
+    const last = groups[groups.length - 1];
+    const consecutive = last && day.dayOfWeek === last.days[last.days.length - 1] + 1;
+    const sameHours = last && last.openHour === day.openHour && last.closeHour === day.closeHour;
+    if (consecutive && sameHours) {
+      last.days.push(day.dayOfWeek);
+    } else {
+      groups.push({ days: [day.dayOfWeek], openHour: day.openHour, closeHour: day.closeHour });
+    }
+  }
+
+  return groups
+    .map((g) => {
+      const dayStr =
+        g.days.length === 1
+          ? DAY_NAMES[g.days[0]]
+          : `${DAY_NAMES[g.days[0]]}-${DAY_NAMES[g.days[g.days.length - 1]]}`;
+      const h = `${String(g.openHour).padStart(2, '0')}:00 - ${String(g.closeHour).padStart(2, '0')}:00`;
+      return `${dayStr} ${h}`;
+    })
+    .join(' / ');
+}
 
 export default function Header() {
-  const { status, busyTime, isOpen, isLoading } = useStoreStatus();
+  const { status, busyTime, isOpen, isLoading, schedule } = useStoreStatus();
   const storeName = process.env.NEXT_PUBLIC_STORE_NAME ?? 'Kiosco Kramer';
-  const hours = process.env.NEXT_PUBLIC_STORE_HOURS ?? 'Lun-Dom 8:00 - 22:00';
+  const hours = schedule.length > 0
+    ? formatSchedule(schedule)
+    : (process.env.NEXT_PUBLIC_STORE_HOURS ?? 'Lun-Dom 8:00 - 22:00');
 
   return (
     <header className="fixed top-0 left-0 right-0 z-50 bg-orange-500 px-4 py-3 shadow-md">
