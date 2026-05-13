@@ -1,4 +1,4 @@
-import { Banner, Category, CategoryWithProducts, PaginatedResponse, Product, ProductFilters } from '@/types';
+import { Banner, Category, CategoryWithProducts, PaginatedResponse, Product, ProductFilters, StoreConfig } from '@/types';
 
 const BASE_URL = process.env.NEXT_PUBLIC_API_URL!;
 
@@ -37,5 +37,8 @@ export const api = {
   },
   banners: {
     getAll: () => fetcher<Banner[]>('/banners'),
+  },
+  config: {
+    get: () => fetcher<StoreConfig>('/config'),
   },
 };

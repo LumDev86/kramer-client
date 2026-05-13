@@ -6,12 +6,14 @@ import { CaretLeft, ShoppingCart } from '@phosphor-icons/react';
 import { useRouter, useParams } from 'next/navigation';
 import { api } from '@/lib/api';
 import { useCartStore } from '@/store/cart';
+import { useStoreStatus } from '@/hooks/useStoreStatus';
 import LogoLoader from '@/components/ui/LogoLoader';
 
 export default function ProductoPage() {
   const { id } = useParams() as { id: string };
   const router = useRouter();
   const add = useCartStore((s) => s.add);
+  const { isOpen } = useStoreStatus();
 
   const { data: product, isLoading } = useQuery({
     queryKey: ['product', id],
@@ -61,13 +63,19 @@ export default function ProductoPage() {
 
       <p className="text-sm text-gray-600 leading-relaxed">{product.description}</p>
 
-      <button
-        onClick={() => add(product)}
-        className="w-full bg-orange-500 text-white font-bold py-4 rounded-2xl flex items-center justify-center gap-2 shadow-md active:scale-95 transition-transform duration-150 text-base"
-      >
-        <ShoppingCart size={20} weight="fill" />
-        Agregar al carrito
-      </button>
+      {isOpen === false ? (
+        <div className="w-full bg-gray-100 text-gray-500 font-bold py-4 rounded-2xl flex items-center justify-center gap-2 text-sm text-center px-4">
+          🕐 El local está cerrado en este momento. Podés volver durante el horario de atención.
+        </div>
+      ) : (
+        <button
+          onClick={() => add(product)}
+          className="w-full bg-orange-500 text-white font-bold py-4 rounded-2xl flex items-center justify-center gap-2 shadow-md active:scale-95 transition-transform duration-150 text-base"
+        >
+          <ShoppingCart size={20} weight="fill" />
+          Agregar al carrito
+        </button>
+      )}
     </div>
   );
 }

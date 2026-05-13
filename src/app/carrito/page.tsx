@@ -4,9 +4,11 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { Trash, Plus, Minus } from '@phosphor-icons/react';
 import { useCartStore } from '@/store/cart';
+import { useStoreStatus } from '@/hooks/useStoreStatus';
 
 export default function CarritoPage() {
   const { items, increment, decrement, remove, total } = useCartStore();
+  const { isOpen, status, busyTime } = useStoreStatus();
 
   if (items.length === 0) {
     return (
@@ -80,13 +82,32 @@ export default function CarritoPage() {
         </div>
       </div>
 
-      <Link
-        href="/checkout"
-        className="w-full bg-orange-500 text-white font-bold py-4 rounded-2xl text-center shadow-md active:scale-95 transition-transform duration-150 block animate-slideUp text-base"
-        style={{ animationDelay: '180ms' }}
-      >
-        Continuar al checkout
-      </Link>
+      {isOpen === false ? (
+        <div className="bg-gray-100 rounded-2xl p-4 text-center animate-slideUp" style={{ animationDelay: '180ms' }}>
+          <p className="text-2xl mb-2">🕐</p>
+          <p className="text-sm font-bold text-gray-600">El local está cerrado</p>
+          <p className="text-xs text-gray-400 font-medium mt-1">
+            Podés seguir viendo tus productos, pero no es posible realizar la compra en este momento. ¡Volvé durante el horario de atención!
+          </p>
+        </div>
+      ) : (
+        <>
+          {status === 'busy' && (
+            <div className="bg-yellow-50 border border-yellow-200 rounded-2xl px-4 py-3 text-center animate-slideUp" style={{ animationDelay: '160ms' }}>
+              <p className="text-xs font-bold text-yellow-600">
+                🕐 Estamos ocupados · Tiempo estimado de entrega: {busyTime} min
+              </p>
+            </div>
+          )}
+          <Link
+            href="/checkout"
+            className="w-full bg-orange-500 text-white font-bold py-4 rounded-2xl text-center shadow-md active:scale-95 transition-transform duration-150 block animate-slideUp text-base"
+            style={{ animationDelay: '180ms' }}
+          >
+            Continuar al checkout
+          </Link>
+        </>
+      )}
     </div>
   );
 }

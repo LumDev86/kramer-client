@@ -51,6 +51,19 @@ export interface CartItem {
   quantity: number;
 }
 
+export interface StoreScheduleDay {
+  dayOfWeek: number;
+  isOpen: boolean;
+  openHour: number;
+  closeHour: number;
+}
+
+export interface StoreConfig {
+  status: 'open' | 'busy' | 'closed';
+  busyTime: number | null;
+  schedule: StoreScheduleDay[];
+}
+
 export interface Banner {
   id: string;
   imageUrl: string;

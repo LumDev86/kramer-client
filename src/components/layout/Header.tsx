@@ -2,30 +2,10 @@
 
 import Image from 'next/image';
 import { Bicycle, Clock } from '@phosphor-icons/react';
-import { useState, useEffect } from 'react';
-
-function useIsOpen() {
-  const [isOpen, setIsOpen] = useState<boolean | null>(null);
-
-  useEffect(() => {
-    const opening = parseInt(process.env.NEXT_PUBLIC_OPENING_HOUR ?? '8');
-    const closing = parseInt(process.env.NEXT_PUBLIC_CLOSING_HOUR ?? '22');
-    const hour = new Date().getHours();
-    setIsOpen(hour >= opening && hour < closing);
-
-    const interval = setInterval(() => {
-      const h = new Date().getHours();
-      setIsOpen(h >= opening && h < closing);
-    }, 60000);
-
-    return () => clearInterval(interval);
-  }, []);
-
-  return isOpen;
-}
+import { useStoreStatus } from '@/hooks/useStoreStatus';
 
 export default function Header() {
-  const isOpen = useIsOpen();
+  const { status, busyTime, isOpen, isLoading } = useStoreStatus();
   const storeName = process.env.NEXT_PUBLIC_STORE_NAME ?? 'Kiosco Kramer';
   const hours = process.env.NEXT_PUBLIC_STORE_HOURS ?? 'Lun-Dom 8:00 - 22:00';
 
@@ -60,9 +40,14 @@ export default function Header() {
           </div>
         </div>
 
-        {isOpen !== null && (
+        {!isLoading && (
           <div className="flex-shrink-0 animate-scaleIn">
-            {isOpen ? (
+            {status === 'busy' && isOpen ? (
+              <span className="flex items-center gap-1.5 bg-yellow-400 text-white text-xs font-bold px-2.5 py-1.5 rounded-full shadow-sm">
+                <span className="w-1.5 h-1.5 bg-white rounded-full animate-pulse" />
+                Ocupado · {busyTime} min
+              </span>
+            ) : isOpen ? (
               <span className="flex items-center gap-1.5 bg-green-400 text-white text-xs font-bold px-2.5 py-1.5 rounded-full shadow-sm">
                 <span className="w-1.5 h-1.5 bg-white rounded-full animate-pulse" />
                 Abierto
