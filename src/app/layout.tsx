@@ -12,8 +12,23 @@ import Header from '@/components/layout/Header';
 import BottomNav from '@/components/layout/BottomNav';
 
 export const metadata: Metadata = {
-  title: 'Tienda Kramer',
-  description: 'Instrumentos musicales',
+  metadataBase: new URL('https://kramer-client.vercel.app'),
+  title: 'Kiosco Kramer',
+  description: 'Pedidos a domicilio de almacén. Comprá desde tu celular y recibí en tu puerta.',
+  icons: {
+    icon: '/logo.png',
+    apple: '/logo.png',
+    shortcut: '/logo.png',
+  },
+  openGraph: {
+    title: 'Kiosco Kramer',
+    description: 'Pedidos a domicilio de almacén. Comprá desde tu celular y recibí en tu puerta.',
+    siteName: 'Kiosco Kramer',
+    locale: 'es_AR',
+    type: 'website',
+    images: [{ url: '/logo.png', width: 800, height: 800, alt: 'Kiosco Kramer' }],
+  },
+  robots: { index: true, follow: true },
 };
 
 export const viewport: Viewport = {
@@ -21,6 +36,7 @@ export const viewport: Viewport = {
   initialScale: 1,
   maximumScale: 1,
   userScalable: false,
+  themeColor: '#f97316',
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
