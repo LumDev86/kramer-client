@@ -1,8 +1,9 @@
 'use client';
 
+import { useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import Image from 'next/image';
-import { CaretLeft, ShoppingCart } from '@phosphor-icons/react';
+import { CaretLeft, ShoppingCart, Check } from '@phosphor-icons/react';
 import { useRouter, useParams } from 'next/navigation';
 import { api } from '@/lib/api';
 import { useCartStore } from '@/store/cart';
@@ -14,6 +15,7 @@ export default function ProductoPage() {
   const router = useRouter();
   const add = useCartStore((s) => s.add);
   const { isOpen } = useStoreStatus();
+  const [added, setAdded] = useState(false);
 
   const { data: product, isLoading } = useQuery({
     queryKey: ['product', id],
@@ -69,11 +71,28 @@ export default function ProductoPage() {
         </div>
       ) : (
         <button
-          onClick={() => add(product)}
-          className="w-full bg-orange-500 text-white font-bold py-4 rounded-2xl flex items-center justify-center gap-2 shadow-md active:scale-95 transition-transform duration-150 text-base"
+          onClick={() => {
+            add(product);
+            setAdded(true);
+            setTimeout(() => setAdded(false), 1500);
+          }}
+          className={`w-full font-bold py-4 rounded-2xl flex items-center justify-center gap-2 shadow-md transition-all duration-300 text-base ${
+            added
+              ? 'bg-green-500 text-white scale-[0.98]'
+              : 'bg-orange-500 text-white active:scale-95'
+          }`}
         >
-          <ShoppingCart size={20} weight="fill" />
-          Agregar al carrito
+          {added ? (
+            <>
+              <Check size={20} weight="bold" />
+              ¡Agregado al carrito!
+            </>
+          ) : (
+            <>
+              <ShoppingCart size={20} weight="fill" />
+              Agregar al carrito
+            </>
+          )}
         </button>
       )}
     </div>

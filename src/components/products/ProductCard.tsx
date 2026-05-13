@@ -1,8 +1,9 @@
 'use client';
 
+import { useState } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
-import { ShoppingCart } from '@phosphor-icons/react';
+import { ShoppingCart, Check } from '@phosphor-icons/react';
 import { Product } from '@/types';
 import { useCartStore } from '@/store/cart';
 import { useStoreStatus } from '@/hooks/useStoreStatus';
@@ -15,10 +16,13 @@ interface Props {
 export default function ProductCard({ product, index = 0 }: Props) {
   const add = useCartStore((s) => s.add);
   const { isOpen } = useStoreStatus();
+  const [added, setAdded] = useState(false);
 
   const handleAdd = (e: React.MouseEvent) => {
     e.preventDefault();
     add(product);
+    setAdded(true);
+    setTimeout(() => setAdded(false), 1500);
   };
 
   return (
@@ -52,9 +56,16 @@ export default function ProductCard({ product, index = 0 }: Props) {
           <button
             onClick={handleAdd}
             disabled={isOpen === false}
-            className="bg-orange-500 text-white rounded-full w-7 h-7 flex items-center justify-center shadow-md active:scale-90 transition-transform duration-150 disabled:opacity-40 disabled:cursor-not-allowed disabled:active:scale-100"
+            className={`rounded-full w-7 h-7 flex items-center justify-center shadow-md transition-all duration-300 disabled:opacity-40 disabled:cursor-not-allowed disabled:active:scale-100 ${
+              added
+                ? 'bg-green-500 scale-110'
+                : 'bg-orange-500 active:scale-90'
+            }`}
           >
-            <ShoppingCart size={14} weight="fill" />
+            {added
+              ? <Check size={14} weight="bold" className="text-white" />
+              : <ShoppingCart size={14} weight="fill" className="text-white" />
+            }
           </button>
         </div>
       </div>
