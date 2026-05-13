@@ -5,7 +5,10 @@ import { api } from '@/lib/api';
 import { StoreConfig } from '@/types';
 
 function computeIsOpen(cfg: StoreConfig): boolean {
+  // El estado manual tiene prioridad absoluta sobre el horario
   if (cfg.status === 'closed') return false;
+  if (cfg.status === 'open' || cfg.status === 'busy') return true;
+  // Fallback: respetar horario de atención
   const now = new Date();
   const day = cfg.schedule.find((d) => d.dayOfWeek === now.getDay());
   if (!day || !day.isOpen) return false;
