@@ -17,8 +17,8 @@ export function useStoreStatus() {
   const { data, isLoading } = useQuery({
     queryKey: ['store-config'],
     queryFn: () => api.config.get(),
-    refetchInterval: 120_000,
-    staleTime: 60_000,
+    refetchInterval: 30_000,
+    staleTime: 20_000,
   });
 
   const isOpen = data ? computeIsOpen(data) : null;
