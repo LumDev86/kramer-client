@@ -27,9 +27,13 @@ export function useStoreStatus() {
   const isOpen = data ? computeIsOpen(data) : null;
 
   return {
-    status:   data?.status   ?? null,
-    busyTime: data?.busyTime ?? null,
-    schedule: data?.schedule ?? [],
+    status:          data?.status          ?? null,
+    busyTime:        data?.busyTime        ?? null,
+    schedule:        data?.schedule        ?? [],
+    whatsappNumber:  data?.whatsappNumber  ?? null,
+    cbu:             data?.cbu             ?? null,
+    alias:           data?.alias           ?? null,
+    titular:         data?.titular         ?? null,
     isOpen,
     isLoading,
   };

@@ -61,6 +61,10 @@ export interface StoreScheduleDay {
 export interface StoreConfig {
   status: 'open' | 'busy' | 'closed';
   busyTime: number | null;
+  whatsappNumber: string | null;
+  cbu: string | null;
+  alias: string | null;
+  titular: string | null;
   schedule: StoreScheduleDay[];
 }
 

@@ -5,6 +5,7 @@ import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { CaretLeft, Copy, Check, WhatsappLogo, CheckCircle } from '@phosphor-icons/react';
 import { useCartStore } from '@/store/cart';
+import { useStoreStatus } from '@/hooks/useStoreStatus';
 import { generateOrderNumber } from '@/lib/orderNumber';
 
 type PaymentMethod = 'efectivo' | 'transferencia';
@@ -13,6 +14,7 @@ type Step = 'form' | 'confirm';
 export default function CheckoutPage() {
   const router = useRouter();
   const { items, total, clear } = useCartStore();
+  const { whatsappNumber: waApi, cbu: cbuApi, alias: aliasApi, titular: titularApi } = useStoreStatus();
   const [step, setStep] = useState<Step>('form');
   const [orderNumber, setOrderNumber] = useState('');
   const [whatsappUrl, setWhatsappUrl] = useState('');
@@ -25,10 +27,10 @@ export default function CheckoutPage() {
     notas: '',
   });
 
-  const cbu = process.env.NEXT_PUBLIC_CBU!;
-  const alias = process.env.NEXT_PUBLIC_ALIAS!;
-  const titular = process.env.NEXT_PUBLIC_TITULAR!;
-  const waNumber = process.env.NEXT_PUBLIC_WHATSAPP_NUMBER!;
+  const cbu     = cbuApi     ?? process.env.NEXT_PUBLIC_CBU             ?? '';
+  const alias   = aliasApi   ?? process.env.NEXT_PUBLIC_ALIAS           ?? '';
+  const titular = titularApi ?? process.env.NEXT_PUBLIC_TITULAR         ?? '';
+  const waNumber = waApi     ?? process.env.NEXT_PUBLIC_WHATSAPP_NUMBER ?? '';
 
   const handleCopy = (text: string, field: 'cbu' | 'alias') => {
     navigator.clipboard.writeText(text);
