@@ -2,12 +2,15 @@ export interface Category {
   id: string;
   name: string;
   imageUrl: string | null;
+  parentId: string | null;
+  parent: { id: string; name: string } | null;
   createdAt: string;
   updatedAt: string;
 }
 
 export interface CategoryWithProducts extends Category {
   products: { id: string; title: string }[];
+  children: { id: string; name: string; imageUrl: string | null }[];
 }
 
 export interface Product {

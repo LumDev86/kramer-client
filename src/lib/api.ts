@@ -10,10 +10,12 @@ async function fetcher<T>(path: string): Promise<T> {
 
 export const api = {
   categories: {
-    getAll: (params: { search?: string; limit?: number } = {}) => {
+    getAll: (params: { search?: string; limit?: number; page?: number; parentId?: string } = {}) => {
       const qs = new URLSearchParams();
-      if (params.search) qs.set('search', params.search);
-      if (params.limit) qs.set('limit', String(params.limit));
+      if (params.search)                 qs.set('search',   params.search);
+      if (params.limit)                  qs.set('limit',    String(params.limit));
+      if (params.page)                   qs.set('page',     String(params.page));
+      if (params.parentId !== undefined)  qs.set('parentId', params.parentId);
       const q = qs.toString() ? `?${qs.toString()}` : '';
       return fetcher<PaginatedResponse<CategoryWithProducts>>(`/categories${q}`);
     },
