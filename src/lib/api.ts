@@ -27,6 +27,7 @@ export const api = {
       const params = new URLSearchParams();
       if (filters.search) params.set('search', filters.search);
       if (filters.categoryId) params.set('categoryId', filters.categoryId);
+      if (filters.parentCategoryId) params.set('parentCategoryId', filters.parentCategoryId);
       if (filters.minPrice !== undefined) params.set('minPrice', String(filters.minPrice));
       if (filters.maxPrice !== undefined) params.set('maxPrice', String(filters.maxPrice));
       if (filters.page) params.set('page', String(filters.page));

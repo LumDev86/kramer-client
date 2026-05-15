@@ -43,6 +43,7 @@ export interface PaginatedResponse<T> {
 export interface ProductFilters {
   search?: string;
   categoryId?: string;
+  parentCategoryId?: string;
   minPrice?: number;
   maxPrice?: number;
   page?: number;
