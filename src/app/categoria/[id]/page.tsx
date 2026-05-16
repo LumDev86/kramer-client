@@ -10,14 +10,15 @@ import ProductGrid from '@/components/products/ProductGrid';
 export default function CategoriaPage() {
   const { id } = useParams() as { id: string };
   const router = useRouter();
-  const [selectedSub, setSelectedSub] = useState<string | null>(null);
+  const [selectedSub, setSelectedSub] = useState('');
 
   const { data: category, isLoading } = useQuery({
     queryKey: ['category', id],
     queryFn: () => api.categories.getById(id),
   });
 
-  const hasChildren = (category?.children?.length ?? 0) > 0;
+  const subcategories = category?.children ?? [];
+  const hasChildren = subcategories.length > 0;
 
   const productFilters = hasChildren
     ? selectedSub
@@ -38,30 +39,29 @@ export default function CategoriaPage() {
 
       {/* Filtros de subcategoría */}
       {!isLoading && hasChildren && (
-        <div className="flex gap-2 overflow-x-auto pb-1 scrollbar-hide">
-          <button
-            onClick={() => setSelectedSub(null)}
-            className={`flex-shrink-0 px-4 py-1.5 rounded-full text-xs font-bold transition-colors ${
-              selectedSub === null
-                ? 'bg-orange-500 text-white'
-                : 'bg-white text-gray-600 border border-gray-200 active:bg-gray-50'
-            }`}
-          >
-            Todas
-          </button>
-          {category!.children.map((sub) => (
+        <div className="relative">
+          <div className="flex gap-2 overflow-x-auto pb-1 scrollbar-hide">
             <button
-              key={sub.id}
-              onClick={() => setSelectedSub(sub.id)}
-              className={`flex-shrink-0 px-4 py-1.5 rounded-full text-xs font-bold transition-colors ${
-                selectedSub === sub.id
-                  ? 'bg-orange-500 text-white'
-                  : 'bg-white text-gray-600 border border-gray-200 active:bg-gray-50'
+              onClick={() => setSelectedSub('')}
+              className={`flex-shrink-0 px-4 py-1.5 rounded-full text-xs font-bold border transition-colors ${
+                selectedSub === '' ? 'bg-orange-500 text-white border-orange-500' : 'bg-white text-gray-600 border-gray-200'
               }`}
             >
-              {sub.name}
+              Todas
             </button>
-          ))}
+            {subcategories.map((sub) => (
+              <button
+                key={sub.id}
+                onClick={() => setSelectedSub(sub.id)}
+                className={`flex-shrink-0 px-4 py-1.5 rounded-full text-xs font-bold border transition-colors ${
+                  selectedSub === sub.id ? 'bg-orange-500 text-white border-orange-500' : 'bg-white text-gray-600 border-gray-200'
+                }`}
+              >
+                {sub.name}
+              </button>
+            ))}
+          </div>
+          <div className="absolute top-0 right-0 h-full w-12 bg-gradient-to-l from-gray-50 to-transparent pointer-events-none" />
         </div>
       )}
 
