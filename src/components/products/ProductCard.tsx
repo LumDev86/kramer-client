@@ -31,7 +31,7 @@ export default function ProductCard({ product, index = 0 }: Props) {
     <Link
       href={`/producto/${product.id}`}
       prefetch={false}
-      className={`block bg-white rounded-2xl shadow-sm overflow-hidden active:scale-95 transition-transform duration-150 animate-slideUp ${inactive ? 'opacity-50' : ''}`}
+      className="block bg-white rounded-2xl shadow-sm overflow-hidden active:scale-95 transition-transform duration-150 animate-slideUp"
       style={{ animationDelay: `${index * 60}ms` }}
     >
       <div className="relative w-full aspect-square bg-white">
@@ -39,12 +39,12 @@ export default function ProductCard({ product, index = 0 }: Props) {
           src={product.imageUrl}
           alt={product.title}
           fill
-          className="object-contain p-2"
+          className={`object-contain p-2 transition-all duration-300 ${inactive ? 'grayscale opacity-40' : ''}`}
           sizes="(max-width: 768px) 50vw"
         />
         {inactive && (
           <div className="absolute inset-0 flex items-center justify-center">
-            <span className="bg-gray-800/70 text-white text-[10px] font-bold px-2 py-1 rounded-full">
+            <span className="bg-gray-900/80 text-white text-xs font-bold px-3 py-1.5 rounded-full tracking-wide">
               Sin stock
             </span>
           </div>
