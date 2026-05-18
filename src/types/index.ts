@@ -22,6 +22,7 @@ export interface Product {
   imageUrl: string;
   quantity: number | null;
   unit: string | null;
+  isActive: boolean;
   categoryId: string | null;
   category: Category | null;
   createdAt: string;

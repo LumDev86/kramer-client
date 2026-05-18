@@ -18,6 +18,8 @@ export default function ProductCard({ product, index = 0 }: Props) {
   const { isOpen } = useStoreStatus();
   const [added, setAdded] = useState(false);
 
+  const inactive = product.isActive === false;
+
   const handleAdd = (e: React.MouseEvent) => {
     e.preventDefault();
     add(product);
@@ -29,7 +31,7 @@ export default function ProductCard({ product, index = 0 }: Props) {
     <Link
       href={`/producto/${product.id}`}
       prefetch={false}
-      className="block bg-white rounded-2xl shadow-sm overflow-hidden active:scale-95 transition-transform duration-150 animate-slideUp"
+      className={`block bg-white rounded-2xl shadow-sm overflow-hidden active:scale-95 transition-transform duration-150 animate-slideUp ${inactive ? 'opacity-50' : ''}`}
       style={{ animationDelay: `${index * 60}ms` }}
     >
       <div className="relative w-full aspect-square bg-white">
@@ -40,6 +42,13 @@ export default function ProductCard({ product, index = 0 }: Props) {
           className="object-contain p-2"
           sizes="(max-width: 768px) 50vw"
         />
+        {inactive && (
+          <div className="absolute inset-0 flex items-center justify-center">
+            <span className="bg-gray-800/70 text-white text-[10px] font-bold px-2 py-1 rounded-full">
+              Sin stock
+            </span>
+          </div>
+        )}
       </div>
       <div className="p-3">
         <p className="text-xs text-gray-400 truncate font-medium">{product.category?.name ?? 'Sin categoría'}</p>
@@ -55,7 +64,7 @@ export default function ProductCard({ product, index = 0 }: Props) {
           </span>
           <button
             onClick={handleAdd}
-            disabled={isOpen === false}
+            disabled={isOpen === false || inactive}
             className={`rounded-full w-7 h-7 flex items-center justify-center shadow-md transition-all duration-300 disabled:opacity-40 disabled:cursor-not-allowed disabled:active:scale-100 ${
               added
                 ? 'bg-green-500 scale-110'
